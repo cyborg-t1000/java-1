@@ -64,11 +64,21 @@ public class Main {
         System.out.println(checkBalance(new int[]{1, 1, 1, 2, 1}));
         System.out.println(checkBalance(new int[]{1, 1, 1, 2, 50}));
 
+        // 7. ****Написать метод, которому на вход подается одномерный массив и число n (может быть положительным, или
+        // отрицательным), при этом метод должен сместить все элементы массива на n позиций. Элементы смещаются циклично.
+        // Для усложнения задачи нельзя пользоваться вспомогательными массивами. Примеры: [ 1, 2, 3 ] при n = 1 (на один
+        // вправо) -> [ 3, 1, 2 ]; [ 3, 5, 6, 1] при n = -2 (на два влево) -> [ 6, 1, 3, 5 ]. При каком n в какую сторону
+        // сдвиг можете выбирать сами.
+
+        int[] arr7 = new int[]{1, 2, 3, 4, 5};
+        arrayShift(arr7, -2);
+        System.out.println(Arrays.toString(arr7));
+
     }
 
     public static boolean checkBalance(int[] arr) {
         for (int i = 0; i < arr.length; i++) {
-            if (arrayRangeSum(arr, 0, i) == arrayRangeSum(arr, i + 1, arr.length-1)) return true;
+            if (arrayRangeSum(arr, 0, i) == arrayRangeSum(arr, i + 1, arr.length - 1)) return true;
         }
         return false;
     }
@@ -80,4 +90,17 @@ public class Main {
         }
         return sum;
     }
+
+    public static void arrayShift(int[] arr, int shift) {
+        if (shift < 0) shift = arr.length + shift; // for negative shift
+        int tmp = arr[0]; // remember 1st element
+        int j = 0;
+        for (int i = 0; i < arr.length - 1; i++) {
+            arr[j] = arr[(j + shift) % arr.length];
+            j = (j + shift) % arr.length;
+        }
+        arr[j] = tmp;
+    }
 }
+
+
