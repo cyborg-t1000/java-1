@@ -53,6 +53,31 @@ public class Main {
             if (arr5[i] < min) min = arr5[i];
             if (arr5[i] > max) max = arr5[i];
         }
-        System.out.printf("Min: %d, Max: %d", min, max);
+        System.out.printf("Min: %d, Max: %d\n", min, max);
+
+        // 6. ** Написать метод, в который передается не пустой одномерный целочисленный массив, метод должен вернуть
+        // true, если в массиве есть место, в котором сумма левой и правой части массива равны. Примеры:
+        // checkBalance([2, 2, 2, 1, 2, 2, || 10, 1]) → true, checkBalance([1, 1, 1, || 2, 1]) → true, граница показана
+        // символами ||, эти символы в массив не входят.
+
+        System.out.println(checkBalance(new int[]{2, 2, 2, 1, 2, 2, 10, 1}));
+        System.out.println(checkBalance(new int[]{1, 1, 1, 2, 1}));
+        System.out.println(checkBalance(new int[]{1, 1, 1, 2, 50}));
+
+    }
+
+    public static boolean checkBalance(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arrayRangeSum(arr, 0, i) == arrayRangeSum(arr, i + 1, arr.length-1)) return true;
+        }
+        return false;
+    }
+
+    public static int arrayRangeSum(int[] arr, int start, int end) {
+        int sum = 0;
+        for (int i = start; i <= end; i++) {
+            sum += arr[i];
+        }
+        return sum;
     }
 }
