@@ -32,7 +32,6 @@ public class Main {
     public static void guessNum() {
         Random random = new Random();
         Scanner sc = new Scanner(System.in);
-        int gameActive = 1;
 
         do {
             int guessedNum = random.nextInt(10);
@@ -54,7 +53,31 @@ public class Main {
                 System.out.printf("У вас закончились попытки. Было загадано число %d\n", guessedNum);
             }
             System.out.print("Повторить игру еще раз? (1 – да / 0 – нет): ");
-            gameActive = sc.nextInt();
-        } while (gameActive == 1);
+        } while (sc.nextInt() == 1);
+    }
+
+    public static void guessWord(String[] words) {
+        Random random = new Random();
+        Scanner sc = new Scanner(System.in);
+        String guessedWord = words[random.nextInt(words.length)];
+        StringBuilder wordMask = new StringBuilder("###############");
+        String enteredWord;
+
+        do {
+            System.out.print("Какое слово я загадал? ");
+            enteredWord = sc.nextLine();
+            if (guessedWord.contentEquals(enteredWord)) {
+                System.out.println("Вы угадали");
+                break;
+            } else {
+                for (int i = 0; i < guessedWord.length() && i < enteredWord.length(); i++) {
+                    if (guessedWord.charAt(i) == enteredWord.charAt(i)) {
+                        wordMask.setCharAt(i, guessedWord.charAt(i));
+                    }
+                }
+                System.out.printf("Не угадали, подсказка: %s\n", wordMask);
+            }
+        } while (true);
+
     }
 }
