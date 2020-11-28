@@ -3,6 +3,7 @@ package hw4;
 
 import java.util.Random;
 import java.util.Scanner;
+
 public class MainClass {
     public static int SIZE = 5;
     public static int DOTS_TO_WIN = 3;
@@ -12,6 +13,7 @@ public class MainClass {
     public static char[][] map;
     public static Scanner sc = new Scanner(System.in);
     public static Random rand = new Random();
+
     public static void main(String[] args) {
         initMap();
         printMap();
@@ -39,17 +41,44 @@ public class MainClass {
         }
         System.out.println("Игра закончена");
     }
+
     public static boolean checkWin(char symb) {
-        if(map[0][0] == symb && map[0][1] == symb && map[0][2] == symb) return true;
-        if(map[1][0] == symb && map[1][1] == symb && map[1][2] == symb) return true;
-        if (map[2][0] == symb && map[2][1] == symb && map[2][2] == symb) return true;
-        if (map[0][0] == symb && map[1][0] == symb && map[2][0] == symb) return true;
-        if (map[0][1] == symb && map[1][1] == symb && map[2][1] == symb) return true;
-        if (map[0][2] == symb && map[1][2] == symb && map[2][2] == symb) return true;
-        if (map[0][0] == symb && map[1][1] == symb && map[2][2] == symb) return true;
-        if (map[2][0] == symb && map[1][1] == symb && map[0][2] == symb) return true;
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                int direction1 = 0;
+                int direction2 = 0;
+                int direction3 = 0;
+                int direction4 = 0;
+                for (int k = 0; k < DOTS_TO_WIN; k++) {
+                    if (j + k < SIZE) {
+                        if (map[i][j + k] == symb) {
+                            direction1++;
+                        }
+                    }
+                    if (i + k < SIZE) {
+                        if (map[i + k][j] == symb) {
+                            direction2++;
+                        }
+                    }
+                    if (j + k < SIZE && i + k < SIZE) {
+                        if (map[i + k][j + k] == symb) {
+                            direction3++;
+                        }
+                    }
+                    if (j - k >= 0 && i - k >= 0) {
+                        if (map[i - k][j - k] == symb) {
+                            direction4++;
+                        }
+                    }
+                }
+                if (direction1 == DOTS_TO_WIN || direction2 == DOTS_TO_WIN || direction3 == DOTS_TO_WIN || direction4 == DOTS_TO_WIN) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
+
     public static boolean isMapFull() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -58,6 +87,7 @@ public class MainClass {
         }
         return true;
     }
+
     public static void aiTurn() {
         int x, y;
         do {
@@ -67,6 +97,7 @@ public class MainClass {
         System.out.println("Компьютер походил в точку " + (x + 1) + " " + (y + 1));
         map[y][x] = DOT_O;
     }
+
     public static void humanTurn() {
         int x, y;
         do {
@@ -76,11 +107,13 @@ public class MainClass {
         } while (!isCellValid(x, y)); // while(isCellValid(x, y) == false)
         map[y][x] = DOT_X;
     }
+
     public static boolean isCellValid(int x, int y) {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return false;
         if (map[y][x] == DOT_EMPTY) return true;
         return false;
     }
+
     public static void initMap() {
         map = new char[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {
@@ -89,6 +122,7 @@ public class MainClass {
             }
         }
     }
+
     public static void printMap() {
         for (int i = 0; i <= SIZE; i++) {
             System.out.print(i + " ");
