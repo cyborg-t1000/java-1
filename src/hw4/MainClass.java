@@ -90,6 +90,21 @@ public class MainClass {
 
     public static void aiTurn() {
         int x, y;
+
+        for (x = 0; x < SIZE; x++) {
+            for (y = 0; y < SIZE; y++) {
+                if (isCellValid(x, y)) {
+                    map[y][x] = DOT_X;
+                    if (checkWin(DOT_X)) {
+                        System.out.println("Компьютер походил в точку " + (x + 1) + " " + (y + 1) + " (AI)");
+                        map[y][x] = DOT_O;
+                        return;
+                    }
+                    map[y][x] = DOT_EMPTY;
+                }
+            }
+        }
+
         do {
             x = rand.nextInt(SIZE);
             y = rand.nextInt(SIZE);
