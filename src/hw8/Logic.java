@@ -14,18 +14,20 @@ public class Logic {
 
     static Random random = new Random();
 
-    static boolean gameFinished;
+    static byte gameFinished;
 
     public static void go() {
-        gameFinished = true;
+        gameFinished = 0;
 
         printMap();
         if (checkWinLines(DOT_X, DOTS_TO_WIN)) {
             System.out.println("Вы выиграли!!!");
+            gameFinished = 1;
             return;
         }
         if (isFull()) {
             System.out.println("Ничья");
+            gameFinished = 2;
             return;
         }
 
@@ -33,14 +35,15 @@ public class Logic {
         printMap();
         if (checkWinLines(DOT_O, DOTS_TO_WIN)) {
             System.out.println("Комьютер победил");
+            gameFinished = 3;
             return;
         }
         if (isFull()) {
             System.out.println("Ничья");
+            gameFinished = 2;
             return;
         }
 
-        gameFinished = false;
     }
 
     static void initMap() {

@@ -11,6 +11,8 @@ public class BattleMap extends JPanel {
     static final int MODE_H_VS_AI = 0;
     static final int MODE_H_VS_H = 1;
 
+    static final double SCALE = 0.8;
+
     private int mode;
     private int fieldSize;
     private int winningLength;
@@ -19,6 +21,8 @@ public class BattleMap extends JPanel {
 
     private int cellWidth;
     private int cellHeight;
+    private int deltaWidth;
+    private int deltaHeight;
 
 
     public BattleMap(GameWindow gameWindow) {
@@ -32,13 +36,25 @@ public class BattleMap extends JPanel {
                 int cellX = e.getX() / cellWidth;
                 int cellY = e.getY() / cellHeight;
 
-                if (!Logic.gameFinished) {
+                if (Logic.gameFinished == 0) {
                     Logic.humanTurn(cellX, cellY);
-
-                    // тут можете проверить кто победил и вывести результат графически
-                    // например через gameWindow
                 }
                 repaint();
+                String msg = "";
+                if (Logic.gameFinished != 0) {
+                    switch (Logic.gameFinished) {
+                        case 1:
+                            msg = "Вы выиграли!!!";
+                            break;
+                        case 2:
+                            msg = "Ничья";
+                            break;
+                        case 3:
+                            msg = "Комьютер победил";
+                            break;
+                    }
+                    JOptionPane.showMessageDialog(null, msg);
+                }
             }
         });
     }
@@ -61,6 +77,8 @@ public class BattleMap extends JPanel {
 
         cellHeight = getHeight() / fieldSize;
         cellWidth = getWidth() / fieldSize;
+        deltaWidth = (int) (cellWidth * (1 - SCALE));
+        deltaHeight = (int) (cellHeight * (1 - SCALE));
 
         for (int i = 1; i < fieldSize; i++) {
             int y = i * cellHeight;
@@ -74,8 +92,11 @@ public class BattleMap extends JPanel {
 
         for (int i = 0; i < Logic.SIZE; i++) {
             for (int j = 0; j < Logic.SIZE; j++) {
-                if(Logic.map[i][j] == Logic.DOT_X){
+                if (Logic.map[i][j] == Logic.DOT_X) {
                     drawX(g, j, i);
+                }
+                if (Logic.map[i][j] == Logic.DOT_O) {
+                    drawO(g, j, i);
                 }
 
 
@@ -93,7 +114,17 @@ public class BattleMap extends JPanel {
     private void drawX(Graphics g, int cellX, int cellY) {
         ((Graphics2D) g).setStroke(new BasicStroke(5));
         g.setColor(Color.RED);
-        g.drawLine(cellX * cellWidth, cellY * cellHeight,
-                (cellX + 1) * cellWidth, (cellY + 1) * cellHeight);
+        g.drawLine(cellX * cellWidth + deltaWidth, cellY * cellHeight + deltaHeight,
+                (cellX + 1) * cellWidth - deltaWidth, (cellY + 1) * cellHeight - deltaHeight);
+        g.drawLine(cellX * cellWidth + deltaWidth, (cellY + 1) * cellHeight - deltaHeight,
+                (cellX + 1) * cellWidth - deltaWidth, cellY * cellHeight + deltaHeight);
     }
+
+    private void drawO(Graphics g, int cellX, int cellY) {
+        ((Graphics2D) g).setStroke(new BasicStroke(5));
+        g.setColor(Color.BLUE);
+        g.drawOval(cellX * cellWidth + deltaWidth, cellY * cellHeight + deltaHeight,
+                cellWidth - deltaWidth * 2, cellHeight - deltaHeight * 2);
+    }
+
 }
